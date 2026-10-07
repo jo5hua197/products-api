@@ -1,0 +1,301 @@
+{
+  "info": {
+    "name": "Products API - MySQL2 TS",
+    "description": "Evidencia de la actividad Server with MySQL2 TS. Ejecutar en orden.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1/products"
+    },
+    {
+      "key": "productId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Obtener todos (activos)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getAll",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "getAll"
+          ]
+        }
+      }
+    },
+    {
+      "name": "2. Obtener por ID (activo)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getById/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "getById",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Crear producto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/create",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "create"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Audífonos Bluetooth\",\n  \"price\": 599.99,\n  \"stock\": 15,\n  \"description\": \"Audífonos inalámbricos con cancelación de ruido\",\n  \"brand\": \"Sony\",\n  \"img\": \"https://example.com/audifonos.jpg\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 201', () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set('productId', pm.response.json().data.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Actualizar producto creado (PUT)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/update/{{productId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "update",
+            "{{productId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Audífonos Bluetooth Pro\",\n  \"price\": 749.5,\n  \"stock\": 20,\n  \"description\": \"Audífonos inalámbricos con cancelación de ruido activa\",\n  \"brand\": \"Sony\",\n  \"img\": \"https://example.com/audifonos-pro.jpg\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "5. Cambiar precio del producto creado (PATCH)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/change-price/{{productId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "change-price",
+            "{{productId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"price\": 699.9\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "6. Baja lógica del producto creado",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/delete/{{productId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "delete",
+            "{{productId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. Comprobar que ya no aparece en getAll",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getAll",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "getAll"
+          ]
+        }
+      }
+    },
+    {
+      "name": "8. Comprobar que getById da 404",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getById/{{productId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "getById",
+            "{{productId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "9. ID inexistente (404)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getById/99999",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "getById",
+            "99999"
+          ]
+        }
+      }
+    },
+    {
+      "name": "10. ID inválido (400)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getById/abc",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "getById",
+            "abc"
+          ]
+        }
+      }
+    },
+    {
+      "name": "11. Crear con datos inválidos (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/create",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "create"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"\",\n  \"price\": -10,\n  \"stock\": 1.5,\n  \"description\": \"Sin nombre\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "12. Cambiar precio inválido (400)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/change-price/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "change-price",
+            "1"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"price\": \"gratis\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
